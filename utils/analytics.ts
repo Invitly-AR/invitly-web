@@ -8,6 +8,8 @@ declare global {
 
 type EventParams = Record<string, string | number | boolean>
 
+export const ANALYTICS_SIGNAL_EVENT = 'bento:analytics-signal'
+
 // Nombres de evento en Object-Action Framework (Title Case): "Plan Selected",
 // "Whatsapp Clicked", etc. GA4 no acepta espacios en el nombre del evento, así
 // que derivamos la versión snake_case para gtag desde el mismo nombre canónico
@@ -19,6 +21,12 @@ function toGaEventName(event: string) {
 
 function track(event: string, params?: EventParams) {
   trackMixpanel(event, params)
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent(ANALYTICS_SIGNAL_EVENT, {
+      detail: { event, params: params ?? {} },
+    }))
+  }
 
   if (typeof window === 'undefined' || typeof window.gtag !== 'function') return
   window.gtag('event', toGaEventName(event), params)
@@ -33,6 +41,13 @@ export const analytics = {
 
   templateSelected: (templateName: string, category?: string) =>
     track('Template Selected', { template_name: templateName, template_category: category ?? '' }),
+
+  personalizationStarted: (templateName: string, category: string | undefined, source: string) =>
+    track('Personalization Started', {
+      template_name: templateName,
+      template_category: category ?? '',
+      source,
+    }),
 
   /** CTA de WhatsApp, del origen que sea. Se distingue por `source`, no por evento. */
   whatsappClicked: (source: string) =>
@@ -53,6 +68,9 @@ export const analytics = {
   heroDemoClicked: () =>
     track('Hero Demo Clicked'),
 
+  pricingLinkClicked: (source: string) =>
+    track('Pricing Link Clicked', { source }),
+
   finalCtaClicked: (mode: string) =>
     track('Final Cta Clicked', { cta_mode: mode }),
 
@@ -69,4 +87,13 @@ export const analytics = {
   /** Fire-once cuando la sección de precios entra en viewport. Funnel real: cuántos la ven vs. cuántos clickean un plan. */
   pricingSectionViewed: () =>
     track('Pricing Section Viewed'),
+
+  intentAssistShown: (trigger: string) =>
+    track('Intent Assist Shown', { trigger }),
+
+  intentAssistClicked: (trigger: string) =>
+    track('Intent Assist Clicked', { trigger }),
+
+  intentAssistDismissed: (trigger: string) =>
+    track('Intent Assist Dismissed', { trigger }),
 }

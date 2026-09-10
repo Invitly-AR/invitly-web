@@ -13,7 +13,9 @@ export function initializeMixpanel() {
   mixpanel.init(token, {
     autocapture: false,
     track_pageview: false,
-    persistence: "localStorage",
+    persistence: "cookie",
+    cross_subdomain_cookie: true,
+    secure_cookie: process.env.NODE_ENV === "production",
   });
   initialized = true;
 

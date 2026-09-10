@@ -10,9 +10,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
 import { InvitationsListSkeleton } from "@/components/shared/skeletons/InvitationsListSkeleton";
+import { Button } from "@/components/ui/button";
 import { useTemplates } from "@/hooks/useTemplates";
-import { openWhatsApp } from "@/utils/openWhatsapp";
 import { analytics } from "@/utils/analytics";
+import { getPersonalizationHref } from "@/src/config/personalization";
 
 /**
  * ─────────────────────────────────────────────────────────────────────────────
@@ -173,7 +174,6 @@ interface TemplatePreviewCardProps {
   invitation: Template;
   index: number;
   isMobile?: boolean;
-  getMessage: (values: { name: string }) => string;
   viewDemo: string;
   get: string;
 }
@@ -182,7 +182,6 @@ function TemplatePreviewCard({
   invitation,
   index,
   isMobile = false,
-  getMessage,
   viewDemo,
   get,
 }: TemplatePreviewCardProps) {
@@ -258,33 +257,36 @@ function TemplatePreviewCard({
         </div>
 
         <div className="flex items-center gap-2.5">
-          <a
-            href={`${DEMO_BASE_URL}/${invitation.name}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => analytics.templateDemoClicked(invitation.name, invitation.category?.display_name)}
-            className="inline-flex min-h-11 min-w-0 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full px-3 py-2.5 font-medium no-underline transition-colors duration-200 motion-reduce:transition-none hover:bg-[rgba(32,0,65,0.06)]"
-            style={{
-              fontSize: "0.8rem",
-              color: "#200041",
-              border: "1px solid rgba(32, 0, 65, 0.18)",
-            }}
+          <Button
+            asChild
+            variant="outline"
+            className="min-h-11 min-w-0 flex-1 rounded-full px-3 text-[0.8rem]"
           >
-            <Play size={11} fill="currentColor" aria-hidden="true" />
-            {viewDemo}
-          </a>
-          <button
-            type="button"
-            onClick={() => {
-              analytics.templateSelected(invitation.name, invitation.category?.display_name);
-              openWhatsApp(getMessage({ name: invitation.display_name }));
-            }}
-            className="inline-flex min-h-11 min-w-0 flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full px-3 py-2.5 font-medium transition-all duration-200 motion-reduce:transition-none hover:gap-3"
-            style={{ fontSize: "0.8rem", backgroundColor: "#FFA459", color: "#FFFFFF" }}
+            <a
+              href={`${DEMO_BASE_URL}/${invitation.name}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => analytics.templateDemoClicked(invitation.name, invitation.category?.display_name)}
+            >
+              <Play size={11} fill="currentColor" aria-hidden="true" />
+              {viewDemo}
+            </a>
+          </Button>
+          <Button
+            asChild
+            className="group/action min-h-11 min-w-0 flex-1 rounded-full px-3 text-[0.8rem]"
           >
-            {get}
-            <ArrowRight size={13} strokeWidth={2.5} aria-hidden="true" />
-          </button>
+            <a
+              href={getPersonalizationHref(invitation.name, "home_templates")}
+              onClick={() => {
+                analytics.templateSelected(invitation.name, invitation.category?.display_name);
+                analytics.personalizationStarted(invitation.name, invitation.category?.display_name, "home_templates");
+              }}
+            >
+              {get}
+              <ArrowRight className="transition-transform group-hover/action:translate-x-0.5" size={13} strokeWidth={2.5} aria-hidden="true" />
+            </a>
+          </Button>
         </div>
       </div>
     </article>
@@ -304,14 +306,13 @@ export function InvitationsList() {
   return (
     <div>
       <div className="-mx-4 sm:hidden">
-        <Swiper slidesPerView={1.16} spaceBetween={20} grabCursor className="px-4 pb-6" aria-label={t("title")}>
+        <Swiper slidesPerView={1.16} spaceBetween={20} grabCursor className="px-4 pb-6" aria-label={t("featuredInvitations")}>
           {list.map((invitation: Template, index: number) => (
             <SwiperSlide key={invitation.id} className="!h-auto">
               <TemplatePreviewCard
                 invitation={invitation}
                 index={index}
                 isMobile
-                getMessage={(values) => t("getMessage", values)}
                 viewDemo={t("viewDemo")}
                 get={t("get")}
               />
@@ -327,7 +328,6 @@ export function InvitationsList() {
               key={invitation.id}
               invitation={invitation}
               index={index}
-              getMessage={(values) => t("getMessage", values)}
               viewDemo={t("viewDemo")}
               get={t("get")}
             />
@@ -335,9 +335,8 @@ export function InvitationsList() {
         })}
       </div>
 
-      <Link
-        href={`/${locale}/templates`}
-        className="group mx-auto mt-12 flex max-w-5xl flex-col items-center justify-between gap-6 border-t px-2 py-8 text-center no-underline sm:flex-row sm:text-left md:mt-14"
+      <div
+        className="mx-auto mt-12 flex max-w-5xl flex-col items-center justify-between gap-6 border-t px-2 py-8 text-center sm:flex-row sm:text-left md:mt-14"
         style={{ borderColor: "rgba(32, 0, 65, 0.12)" }}
       >
         <h3
@@ -350,14 +349,18 @@ export function InvitationsList() {
         >
           {t("seeAllTitle")}
         </h3>
-        <span
-          className="shrink-0 inline-flex min-h-12 items-center gap-2 rounded-full px-6 py-3 font-medium transition-all duration-300 motion-reduce:transition-none group-hover:gap-3"
-          style={{ backgroundColor: "#FFA459", color: "#FFFFFF", fontSize: "0.85rem" }}
-        >
-          {t("seeAllCta")}
-          <ArrowRight size={15} strokeWidth={2.5} aria-hidden="true" />
-        </span>
-      </Link>
+        <Button asChild className="group/action min-h-12 shrink-0 rounded-full px-6">
+          <Link href={`/${locale}/templates`}>
+            {t("seeAllCta")}
+            <ArrowRight
+              className="transition-transform group-hover/action:translate-x-0.5"
+              size={15}
+              strokeWidth={2.5}
+              aria-hidden="true"
+            />
+          </Link>
+        </Button>
+      </div>
     </div>
   );
 }
