@@ -9,9 +9,9 @@ import { useTranslations, useLocale } from "next-intl";
 import { getTemplateDetail } from "@/src/content/templateDetails";
 import { ErrorState } from "@/components/shared/states/ErrorState";
 import { EmptyState } from "@/components/shared/states/EmptyState";
-import { openWhatsApp } from "@/utils/openWhatsapp";
 import { analytics } from "@/utils/analytics";
 import { Play, ArrowRight } from "lucide-react";
+import { getPersonalizationHref } from "@/src/config/personalization";
 
 export function TemplatesGrid({
   categoryKey,
@@ -101,27 +101,28 @@ function TemplateCard({ template, t }: { template: Template; t: ReturnType<typeo
           className="absolute inset-0 hidden md:flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
           style={{ backdropFilter: "blur(2px)", background: "rgba(255,164,89,0.2)" }}
         >
-          <a
-            href={`https://inv.bento.com.ar/demo/${template.name}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => analytics.templateDemoClicked(template.name, template.category?.display_name)}
-          >
-            <Button size="sm" className="gap-1.5 bg-white text-[#FFA459] hover:bg-white/90">
+          <Button asChild size="sm" className="gap-1.5 bg-white text-[#9B4E12] hover:bg-white/90">
+            <a
+              href={`https://inv.bento.com.ar/demo/${template.name}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => analytics.templateDemoClicked(template.name, template.category?.display_name)}
+            >
               <Play size={11} fill="currentColor" />
               {t("viewDemo")}
-            </Button>
-          </a>
-          <Button
-            size="sm"
-            className="gap-1.5 bg-[#FFA459] text-white hover:bg-[#FFA459]/90"
-            onClick={() => {
-              analytics.templateSelected(template.name, template.category?.display_name);
-              openWhatsApp(t("getMessage", { name: template.display_name }));
-            }}
-          >
-            {t("get")}
-            <ArrowRight size={11} strokeWidth={2.5} />
+            </a>
+          </Button>
+          <Button asChild size="sm" className="gap-1.5">
+            <a
+              href={getPersonalizationHref(template.name, "catalog")}
+              onClick={() => {
+                analytics.templateSelected(template.name, template.category?.display_name);
+                analytics.personalizationStarted(template.name, template.category?.display_name, "catalog");
+              }}
+            >
+              {t("get")}
+              <ArrowRight size={11} strokeWidth={2.5} />
+            </a>
           </Button>
         </div>
 
@@ -143,28 +144,34 @@ function TemplateCard({ template, t }: { template: Template; t: ReturnType<typeo
             )}
           </h3>
           <div className="flex gap-1.5">
-            <a
-              href={`https://inv.bento.com.ar/demo/${template.name}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => analytics.templateDemoClicked(template.name, template.category?.display_name)}
-              className="flex-1 flex items-center justify-center gap-1 rounded-full border border-white/40 bg-black/30 backdrop-blur-sm py-1.5 text-white/90 font-medium"
-              style={{ fontSize: "0.6rem", letterSpacing: "0.02em" }}
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="h-8 min-w-0 flex-1 rounded-full border-white/40 bg-black/30 px-2 text-[0.6rem] text-white hover:bg-black/45 hover:text-white"
             >
-              <Play size={9} fill="currentColor" />
-              {t("viewDemo")}
-            </a>
-            <button
-              onClick={() => {
-                analytics.templateSelected(template.name, template.category?.display_name);
-                openWhatsApp(t("getMessage", { name: template.display_name }));
-              }}
-              className="flex-1 flex items-center justify-center gap-1 rounded-full bg-white py-1.5 text-neutral-900 font-semibold"
-              style={{ fontSize: "0.6rem", letterSpacing: "0.02em" }}
-            >
-              {t("get")}
-              <ArrowRight size={9} strokeWidth={2.5} />
-            </button>
+              <a
+                href={`https://inv.bento.com.ar/demo/${template.name}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => analytics.templateDemoClicked(template.name, template.category?.display_name)}
+              >
+                <Play size={9} fill="currentColor" />
+                {t("viewDemo")}
+              </a>
+            </Button>
+            <Button asChild size="sm" className="h-8 min-w-0 flex-1 rounded-full bg-white px-2 text-[0.6rem] text-neutral-900 hover:bg-white/90">
+              <a
+                href={getPersonalizationHref(template.name, "catalog")}
+                onClick={() => {
+                  analytics.templateSelected(template.name, template.category?.display_name);
+                  analytics.personalizationStarted(template.name, template.category?.display_name, "catalog");
+                }}
+              >
+                {t("get")}
+                <ArrowRight size={9} strokeWidth={2.5} />
+              </a>
+            </Button>
           </div>
         </div>
       </div>

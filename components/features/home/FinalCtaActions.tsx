@@ -25,16 +25,17 @@ export default function FinalCtaActions({
 }: Props) {
   return (
     <div className="flex flex-col sm:flex-row gap-4 justify-center">
-      <Link
-        href={primaryHref}
-        onClick={() => analytics.finalCtaClicked(ctaMode)}
-        {...(primaryExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      >
-        <Button size="lg" className="shadow-elegant w-full sm:w-auto" aria-label={primaryLabel}>
+      <Button asChild size="lg" className="w-full sm:w-auto">
+        <Link
+          href={primaryHref}
+          onClick={() => analytics.finalCtaClicked(ctaMode)}
+          aria-label={primaryLabel}
+          {...(primaryExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        >
           {primaryLabel}
           <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-        </Button>
-      </Link>
+        </Link>
+      </Button>
 
       <Button
         type="button"

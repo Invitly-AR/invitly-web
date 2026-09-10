@@ -4,8 +4,8 @@ import { Container } from "@/components/shared/Container";
 import HeroPhonesWrapper from "@/components/features/home/HeroPhonesWrapper";
 import HeroActions from "@/components/features/home/HeroActions";
 import {
-  DEMO_INVITATION_URL,
   getPrimaryCtaHref,
+  getPricingHref,
   isPrimaryCtaExternal,
   CTA_MODE,
 } from "@/src/config/cta";
@@ -108,7 +108,7 @@ export default async function Hero() {
                 primaryHref={getPrimaryCtaHref(locale)}
                 primaryExternal={isPrimaryCtaExternal()}
                 ctaMode={CTA_MODE}
-                demoHref={DEMO_INVITATION_URL}
+                pricingHref={getPricingHref(locale)}
               />
 
               <p className="mt-4 text-xs text-muted-foreground text-center lg:text-left">

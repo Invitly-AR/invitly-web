@@ -5,8 +5,8 @@
     "title": "Invitaciones digitales que organizan tu evento entero.",
     "subtitle": "La invitación que abren tus invitados, y el panel donde vos ves todo en vivo: quién confirmó, qué canciones pidieron y cómo viene el evento.",
     "button": {
-      "primary": "Crear mi invitación",
-      "secondary": "Ver una invitación real"
+      "primary": "Ver invitaciones reales",
+      "secondary": "Ver precios"
     },
     "trust": "Desde $60.000 · Pagás una vez, por evento · Sin suscripción mensual",
     "stats": {
@@ -145,9 +145,9 @@
   "FinalCta": {
     "eyebrow": "Último paso",
     "title": "Tu evento ya tiene fecha. La invitación puede estar lista hoy.",
-    "subtitle": "Elegí tu plan, armá tu invitación y mandá el link por WhatsApp. La mayoría lo tiene funcionando en menos de una hora.",
+    "subtitle": "Elegí el diseño que más te guste, creá tu cuenta y personalizalo a tu manera.",
     "button": {
-      "primary": "Crear mi invitación",
+      "primary": "Ver diseños",
       "secondary": "Hablar por WhatsApp"
     },
     "trust": "Pagás una vez · Sin suscripción · Soporte en español",
@@ -442,6 +442,13 @@
     "badge": "Diseños únicos",
     "title": "Elegí el diseño de tu invitación",
     "subtitle": "Cada plantilla ya viene con RSVP, mapa, galería y playlist. La personalizás en minutos."
+  },
+  "IntentAssist": {
+    "title": "¿Querés una mano para elegir?",
+    "description": "Te recomendamos un diseño según tu evento, sin compromiso.",
+    "cta": "Hablar por WhatsApp",
+    "dismiss": "Cerrar ayuda",
+    "message": "Hola, estuve viendo los diseños de Bento y quiero ayuda para elegir uno para mi evento."
   },
   "B2BAwarenessBanner": {
     "badge": "Bento para empresas",
