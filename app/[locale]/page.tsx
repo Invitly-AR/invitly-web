@@ -20,6 +20,7 @@ const Pricing = lazy(() => import("@/components/features/home/Pricing"));
 const RiskReversal = lazy(() => import("@/components/features/home/RiskReversal"));
 const FAQ = lazy(() => import("@/components/features/home/FAQ"));
 const FinalCta = lazy(() => import("@/components/features/home/FinalCta"));
+const IntentAssistBar = lazy(() => import("@/components/features/home/IntentAssistBar"));
 
 import { FeaturesSkeleton } from "@/components/shared/skeletons/FeaturesSkeleton";
 import {
@@ -94,9 +95,9 @@ export async function generateMetadata({
  * objeción que deja abierta el anterior:
  *
  *   1  Hero              → qué es y cuánto sale
- *   2  Problema          → por qué te importa
- *   3  Demo interactiva  → cómo se siente (única vista del panel pre-compra)
- *   4  Templates         → cómo se va a ver el mío
+ *   2  Templates         → cómo se va a ver el mío
+ *   3  Problema          → por qué te importa
+ *   4  Demo interactiva  → cómo se siente (única vista del panel pre-compra)
  *   5  Panel real        → qué estás comprando
  *   6  Precio            → cuánto sale exactamente
  *   7  Sin riesgo        → qué pasa si me arrepiento
@@ -135,14 +136,14 @@ export default async function Home({
         <SocialProofBanner />
       </Suspense>
 
+      <Suspense fallback={<TemplatesSectionSkeleton />}>
+        <TemplatesSection />
+      </Suspense>
+
       <ProblemSection />
 
       <Suspense fallback={<FeaturesSkeleton />}>
         <LiveDemo />
-      </Suspense>
-
-      <Suspense fallback={<TemplatesSectionSkeleton />}>
-        <TemplatesSection />
       </Suspense>
 
       <Suspense fallback={<FeaturesSkeleton />}>
@@ -164,6 +165,8 @@ export default async function Home({
       <Suspense fallback={<BannerSkeleton />}>
         <FinalCta />
       </Suspense>
+
+      <IntentAssistBar />
     </div>
   );
 }

@@ -5,8 +5,8 @@
     "title": "Your entire event, in a single link.",
     "subtitle": "The invitation your guests open, and the panel where you see everything live: who confirmed, which songs they requested, and how the event is going.",
     "button": {
-      "primary": "Create my invitation",
-      "secondary": "See a real invitation"
+      "primary": "View real invitations",
+      "secondary": "View pricing"
     },
     "trust": "From $60 · One payment, per event · No monthly subscription",
     "stats": {
@@ -145,9 +145,9 @@
   "FinalCta": {
     "eyebrow": "Last step",
     "title": "Your event already has a date. The invitation can be ready today.",
-    "subtitle": "Pick your plan, build your invitation and send the link over WhatsApp. Most people have it running in under an hour.",
+    "subtitle": "Choose your favorite design, create your account, and make it your own.",
     "button": {
-      "primary": "Create my invitation",
+      "primary": "View designs",
       "secondary": "Chat on WhatsApp"
     },
     "trust": "One payment · No subscription · Support in Spanish",
@@ -442,6 +442,13 @@
     "badge": "Unique designs",
     "title": "Pick your invitation design",
     "subtitle": "Every template already ships with RSVP, map, gallery and playlist. You customize it in minutes."
+  },
+  "IntentAssist": {
+    "title": "Want help choosing?",
+    "description": "We'll recommend a design for your event, with no commitment.",
+    "cta": "Chat on WhatsApp",
+    "dismiss": "Close help",
+    "message": "Hi, I was looking at Bento designs and would like help choosing one for my event."
   },
   "B2BAwarenessBanner": {
     "badge": "Bento for business",

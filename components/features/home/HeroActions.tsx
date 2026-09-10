@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { analytics } from "@/utils/analytics";
 
@@ -11,7 +11,7 @@ interface Props {
   primaryHref: string;
   primaryExternal: boolean;
   ctaMode: string;
-  demoHref: string;
+  pricingHref: string;
 }
 
 /**
@@ -27,44 +27,35 @@ export default function HeroActions({
   primaryHref,
   primaryExternal,
   ctaMode,
-  demoHref,
+  pricingHref,
 }: Props) {
   return (
     <div
       data-hero="cta"
       className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
     >
-      <Link
-        href={primaryHref}
-        onClick={() => analytics.heroCtaClicked(ctaMode)}
-        {...(primaryExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      >
-        <Button
-          size="lg"
-          className="shadow-elegant group w-full sm:w-auto"
+      <Button asChild size="lg" className="group w-full sm:w-auto">
+        <Link
+          href={primaryHref}
+          onClick={() => analytics.heroCtaClicked(ctaMode)}
           aria-label={primaryLabel}
+          {...(primaryExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
         >
           {primaryLabel}
           <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-        </Button>
-      </Link>
+        </Link>
+      </Button>
 
-      <Link
-        href={demoHref}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={() => analytics.heroDemoClicked()}
-      >
-        <Button
-          variant="outline"
-          size="lg"
-          className="w-full sm:w-auto"
+      <Button asChild variant="outline" size="lg" className="w-full sm:w-auto">
+        <Link
+          href={pricingHref}
+          onClick={() => analytics.pricingLinkClicked("hero")}
           aria-label={secondaryLabel}
         >
           {secondaryLabel}
-          <ExternalLink className="ml-2 h-4 w-4" aria-hidden="true" />
-        </Button>
-      </Link>
+          <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+        </Link>
+      </Button>
     </div>
   );
 }

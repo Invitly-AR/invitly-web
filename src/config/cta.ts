@@ -2,45 +2,43 @@
  * Configuración central del CTA principal de la home.
  *
  * ─────────────────────────────────────────────────────────────────────────────
- * DECISIÓN PENDIENTE — "vista previa antes de pagar"
+ * DECISIÓN ACTIVA — "elegir diseño antes de registrarse"
  * ─────────────────────────────────────────────────────────────────────────────
- * Hoy el modelo es pay-first: el usuario paga y recién ahí accede al panel.
- * Si se habilita que alguien arme su invitación con SUS datos y pague solo para
- * publicarla, el CTA de toda la home cambia. Ese cambio se hace ACÁ, en un
- * único lugar, y se propaga a Hero, FinalCta y cualquier otro consumidor.
+ * El CTA principal lleva al catálogo. El registro aparece recién cuando la
+ * persona elige personalizar un diseño.
  *
- * Para cambiar el modelo:
- *   1. Poner CTA_MODE = "preview-first"
+ * Para volver al modelo anterior:
+ *   1. Poner CTA_MODE = "pay-first"
  *   2. Ajustar las claves `Hero.button.primary` y `FinalCta.button.primary`
  *      en messages/es/home.json y messages/en/home.json
  *
  * NO hardcodear destinos de CTA en los componentes.
  */
 
-export type CtaMode = "pay-first" | "preview-first";
+export type CtaMode = "pay-first" | "design-first";
 
 /** Modelo comercial activo. Ver bloque de arriba antes de tocar. */
-export const CTA_MODE: CtaMode = "pay-first";
-
-const APP_URL = "https://app.bento.com.ar";
+export const CTA_MODE: CtaMode = "design-first";
 
 /**
  * Destino del CTA primario de la home.
  * - pay-first     → pricing, porque el precio es la primera objeción a resolver.
- * - preview-first → constructor de invitación, el pago llega al publicar.
+ * - design-first  → catálogo, para elegir antes de registrarse o pagar.
  */
 export function getPrimaryCtaHref(locale: string): string {
-  if (CTA_MODE === "preview-first") {
-    return `${APP_URL}/signup?intent=preview`;
+  if (CTA_MODE === "design-first") {
+    return `/${locale}/templates`;
   }
   return `/${locale}/pricing`;
 }
 
 export function isPrimaryCtaExternal(): boolean {
-  return CTA_MODE === "preview-first";
+  return false;
 }
 
-export const DEMO_INVITATION_URL = "https://inv.bento.com.ar/demo/autumn";
+export function getPricingHref(locale: string): string {
+  return `/${locale}/pricing`;
+}
 
 /** Precio de entrada. Se muestra en el hero para calificar al visitante temprano. */
 export const ENTRY_PRICE_ES = "$60.000";
